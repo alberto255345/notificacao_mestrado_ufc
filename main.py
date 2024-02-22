@@ -129,6 +129,11 @@ def index():
 
         print("E-mail enviado com sucesso!")
         return "Hello World!"
+    
+# Rota padrão para tratar erros 404
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'Erro 404: Página não encontrada', 404
 
 if __name__ == "__main__":
     app.run()
