@@ -1,15 +1,15 @@
 steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/931667784738/notificacao-mestrado', '.']
+  args: ['build', '-t', 'gcr.io/portifolio-pessoal-alberto/notificacao-mestrado', '.']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/931667784738/notificacao-mestrado']
+  args: ['push', 'gcr.io/portifolio-pessoal-alberto/notificacao-mestrado']
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run', 'deploy', 'notificacao-mestrado', '--image', 'gcr.io/931667784738/notificacao-mestrado', '--region', 'us-central1']
+  args: ['run', 'deploy', 'notificacao-mestrado', '--image', 'gcr.io/portifolio-pessoal-alberto/notificacao-mestrado', '--region', 'us-central1']
 images:
-- gcr.io/931667784738/notificacao-mestrado
+- gcr.io/portifolio-pessoal-alberto/notificacao-mestrado
 options:
   logging: CLOUD_LOGGING_ONLY
