@@ -1,9 +1,8 @@
 # [START ndb_flask]
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request  # Importe o objeto request
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -21,9 +20,7 @@ project_id = "931667784738"
 if not os.path.exists(".env"):
     try:
         # carrega secret
-        payload = get_json_secret(project_id, secret_name)
-        # Converte a string JSON em um dicionário Python
-        secret_dict = json.loads(payload)
+        secret_dict = get_json_secret(project_id, secret_name)
         # Define cada chave do dicionário como uma variável de ambiente
         for key, value in secret_dict.items():
             os.environ[key] = value
@@ -34,7 +31,7 @@ else:
     dotenv.load_dotenv(".env")
 
 @app.route("/", methods=["GET", "POST"])
-def index(request):
+def index():
     if request.method == "POST":
         # validação
         print('Entrou POST')
@@ -99,6 +96,8 @@ def index(request):
         # Converter DataFrame em JSON
         json_data = df.to_json(orient='records')
 
+        print(json_data)
+
         # Configurações do servidor SMTP e credenciais de login que estão no env
         remetente = os.getenv('REMETENTE')
         remetente_nome = os.getenv('REMETENTE_NOME')
@@ -126,13 +125,18 @@ def index(request):
 
         # Enviar e-mail
         texto_email = msg.as_string()
-        server.sendmail(remetente, destinatario, texto_email)
+        try:
+            server.sendmail(remetente, destinatario, texto_email)
+            print("E-mail enviado com sucesso!")
+        except smtplib.SMTPException as e:
+            print("Erro ao enviar e-mail:", e)
 
         # Fechar conexão com o servidor
         server.quit()
 
-        print("E-mail enviado com sucesso!")
-        return "Hello World!"
+        # Retorne um JSON indicando sucesso
+        return jsonify({'status': 'success', 'message': 'E-mail enviado com sucesso!'})
+
     
 # Rota padrão para tratar erros 404
 @app.errorhandler(404)
