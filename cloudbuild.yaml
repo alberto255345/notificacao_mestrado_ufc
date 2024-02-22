@@ -10,3 +10,6 @@ steps:
   - --trigger-http
   - --runtime=python310
   - --entry-point=index
+  - --no-gen2
+  - --no-allow-unauthenticated
+  - --ingress-settings=all
