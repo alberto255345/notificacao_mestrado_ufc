@@ -28,7 +28,7 @@ if not os.path.exists(".env"):
 else:
     dotenv.load_dotenv(".env")
 
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 def index():
     # definindo que usaremos o Firefox sem carregar a página graficamente
     options = webdriver.FirefoxOptions()
