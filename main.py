@@ -29,7 +29,7 @@ if not os.path.exists(".env"):
 else:
     dotenv.load_dotenv(".env")
 
-@app.route("/index", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         # validação
