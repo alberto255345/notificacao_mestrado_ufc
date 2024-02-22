@@ -136,6 +136,6 @@ def page_not_found(error):
     return 'Erro 404: Página não encontrada', 404
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 
 # [END ndb_flask]
