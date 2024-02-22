@@ -1,5 +1,17 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['gcloud', 'functions', 'deploy', 'notificacao-mestrado-ufc', '--region=us-central1', '--source=.', '--trigger-http', '--runtime=python310', '--entry-point=index', '--no-gen2', '--no-allow-unauthenticated', '--ingress-settings=all']
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - notificacao-mestrado-ufc
+  - --region=us-central1
+  - --source=.
+  - --trigger-http
+  - --runtime=python310
+  - --entry-point=index
+  - --no-gen2
+  - --no-allow-unauthenticated
+  - --ingress-settings=all
 options:
   logging: CLOUD_LOGGING_ONLY
