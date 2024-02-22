@@ -11,3 +11,5 @@ steps:
   args: ['run', 'deploy', 'notificacao-mestrado', '--image', 'gcr.io/931667784738/notificacao-mestrado', '--region', 'us-central1']
 images:
 - gcr.io/931667784738/notificacao-mestrado
+options:
+  logging: CLOUD_LOGGING_ONLY
