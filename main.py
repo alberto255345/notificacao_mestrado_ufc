@@ -1,5 +1,6 @@
 # [START ndb_flask]
 from flask import Flask
+from flask import request  # Importe o objeto request
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -30,96 +31,104 @@ else:
 
 @app.route("/index", methods=["GET", "POST"])
 def index():
-    # definindo que usaremos o Firefox sem carregar a página graficamente
-    options = webdriver.FirefoxOptions()
-    options.add_argument('--headless')
-
-    # carregando uma página da Internet via Firefox
-    driver = webdriver.Firefox(options=options)
-    driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
-
-    # Obtém o título da página
-    titulo_pagina = driver.title
-
-    # Valida se o título esperado está presente
-    if "SIGAA - Sistema Integrado de Gestão de Atividades Acadêmicas" in titulo_pagina:
-        print("Página carregada com sucesso!")
+    if request.method == "POST":
+        # validação
+        print('Entrou POST')
+        return "POST request recebida com sucesso!"
     else:
-        print("Erro ao carregar a página. Título incorreto.")
+        # validação
+        print('Entrou GET')
 
-    colunas=['Agrupador', 'Titulo', 'Categoria', 'Vagas', 'Periodo']
+        # definindo que usaremos o Firefox sem carregar a página graficamente
+        options = webdriver.FirefoxOptions()
+        options.add_argument('--headless')
 
-    texto = driver.find_elements(By.CLASS_NAME, 'agrupador')
+        # carregando uma página da Internet via Firefox
+        driver = webdriver.Firefox(options=options)
+        driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
 
-    # Lista para armazenar os dados
-    dados = []
+        # Obtém o título da página
+        titulo_pagina = driver.title
 
-    # Iterar sobre os elementos "agrupador"
-    for agrupador in texto:
-        # Dados para salvar
-        linha_dados = []
+        # Valida se o título esperado está presente
+        if "SIGAA - Sistema Integrado de Gestão de Atividades Acadêmicas" in titulo_pagina:
+            print("Página carregada com sucesso!")
+        else:
+            print("Erro ao carregar a página. Título incorreto.")
 
-        # Adicione o texto do agrupador à lista de dados
-        linha_dados.append(agrupador.text)
+        colunas=['Agrupador', 'Titulo', 'Categoria', 'Vagas', 'Periodo']
 
-        # Encontre o próximo elemento "tr" (linha) após o agrupador e seleciona o td de cada
-        dado_subsequente = agrupador.find_element(By.XPATH, './following::tr').find_elements(By.TAG_NAME, 'td')
+        texto = driver.find_elements(By.CLASS_NAME, 'agrupador')
 
-        # Adicione o texto de cada coluna à lista de dados
-        for coluna in dado_subsequente:
-            if coluna.text != '' :
-                linha_dados.append(coluna.text)
+        # Lista para armazenar os dados
+        dados = []
 
-        # Adicione a linha de dados à lista de dados
-        dados.append(linha_dados)
+        # Iterar sobre os elementos "agrupador"
+        for agrupador in texto:
+            # Dados para salvar
+            linha_dados = []
 
-    # Crie um DataFrame com os dados
-    df = pd.DataFrame(dados, columns=colunas)
+            # Adicione o texto do agrupador à lista de dados
+            linha_dados.append(agrupador.text)
 
-    # Dividir a coluna 'Período' em duas colunas: 'Início' e 'Fim'
-    df[['Início', 'Fim']] = df['Periodo'].str.split('a', expand=True)
+            # Encontre o próximo elemento "tr" (linha) após o agrupador e seleciona o td de cada
+            dado_subsequente = agrupador.find_element(By.XPATH, './following::tr').find_elements(By.TAG_NAME, 'td')
 
-    # Remover espaços em branco extras
-    df['Início'] = df['Início'].str.strip()
-    df['Fim'] = df['Fim'].str.strip()
+            # Adicione o texto de cada coluna à lista de dados
+            for coluna in dado_subsequente:
+                if coluna.text != '' :
+                    linha_dados.append(coluna.text)
 
-    # Converter DataFrame em JSON
-    json_data = df.to_json(orient='records')
+            # Adicione a linha de dados à lista de dados
+            dados.append(linha_dados)
 
-    # Configurações do servidor SMTP e credenciais de login que estão no env
-    remetente = os.getenv('REMETENTE')
-    remetente_nome = os.getenv('REMETENTE_NOME')
-    senha = os.getenv('SENHA')
-    destinatario = os.getenv('DESTINATARIO')
-    servidor_smtp = os.getenv('SERVIDOR_SMTP')
-    porta = os.getenv('PORTA')  # Porta para conexão TLS
+        # Crie um DataFrame com os dados
+        df = pd.DataFrame(dados, columns=colunas)
 
-    # Criar mensagem de e-mail
-    msg = MIMEMultipart()
-    msg['From'] = f'{remetente_nome} <{remetente}>'
-    msg['To'] = destinatario
-    msg['Subject'] = 'Novo mestrado encontrado'
+        # Dividir a coluna 'Período' em duas colunas: 'Início' e 'Fim'
+        df[['Início', 'Fim']] = df['Periodo'].str.split('a', expand=True)
 
-    # Corpo do e-mail
-    corpo = json_data
-    msg.attach(MIMEText(corpo, 'plain'))
+        # Remover espaços em branco extras
+        df['Início'] = df['Início'].str.strip()
+        df['Fim'] = df['Fim'].str.strip()
 
-    # Iniciar conexão com o servidor SMTP
-    server = smtplib.SMTP(servidor_smtp, porta)
-    server.starttls()
+        # Converter DataFrame em JSON
+        json_data = df.to_json(orient='records')
 
-    # Fazer login no servidor SMTP
-    server.login(remetente, senha)
+        # Configurações do servidor SMTP e credenciais de login que estão no env
+        remetente = os.getenv('REMETENTE')
+        remetente_nome = os.getenv('REMETENTE_NOME')
+        senha = os.getenv('SENHA')
+        destinatario = os.getenv('DESTINATARIO')
+        servidor_smtp = os.getenv('SERVIDOR_SMTP')
+        porta = os.getenv('PORTA')  # Porta para conexão TLS
 
-    # Enviar e-mail
-    texto_email = msg.as_string()
-    server.sendmail(remetente, destinatario, texto_email)
+        # Criar mensagem de e-mail
+        msg = MIMEMultipart()
+        msg['From'] = f'{remetente_nome} <{remetente}>'
+        msg['To'] = destinatario
+        msg['Subject'] = 'Novo mestrado encontrado'
 
-    # Fechar conexão com o servidor
-    server.quit()
+        # Corpo do e-mail
+        corpo = json_data
+        msg.attach(MIMEText(corpo, 'plain'))
 
-    print("E-mail enviado com sucesso!")
-    return "Hello World!"
+        # Iniciar conexão com o servidor SMTP
+        server = smtplib.SMTP(servidor_smtp, porta)
+        server.starttls()
+
+        # Fazer login no servidor SMTP
+        server.login(remetente, senha)
+
+        # Enviar e-mail
+        texto_email = msg.as_string()
+        server.sendmail(remetente, destinatario, texto_email)
+
+        # Fechar conexão com o servidor
+        server.quit()
+
+        print("E-mail enviado com sucesso!")
+        return "Hello World!"
 
 if __name__ == "__main__":
     app.run()
