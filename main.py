@@ -14,6 +14,10 @@ from secretmanager import get_json_secret
 
 app = Flask(__name__)
 
+# Define o nome do Secret e o projeto do GCP
+secret_name = "segredos"
+project_id = "931667784738"
+
 if not os.path.exists(".env"):
     try:
         # carrega secret
@@ -30,7 +34,7 @@ else:
     dotenv.load_dotenv(".env")
 
 @app.route("/", methods=["GET", "POST"])
-def index():
+def index(request):
     if request.method == "POST":
         # validação
         print('Entrou POST')
