@@ -1,15 +1,3 @@
 steps:
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  args:
-  - gcloud
-  - functions
-  - deploy
-  - notificacao-mestrado-ufc
-  - --region=us-central1
-  - --source=.
-  - --trigger-http
-  - --runtime=python310
-  - --entry-point=index
-  - --no-gen2
-  - --no-allow-unauthenticated
-  - --ingress-settings=all
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['gcloud', 'functions', 'deploy', 'notificacao-mestrado-ufc', '--region=us-central1', '--source=.', '--trigger-http', '--runtime=python310', '--entry-point=index', '--no-gen2', '--no-allow-unauthenticated', '--ingress-settings=all']
