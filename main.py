@@ -19,11 +19,13 @@ project_id = "931667784738"
 
 if not os.path.exists(".env"):
     try:
+        print('secret init')
         # carrega secret
         secret_dict = get_json_secret(project_id, secret_name)
         # Define cada chave do dicionário como uma variável de ambiente
         for key, value in secret_dict.items():
             os.environ[key] = value
+        print('secret loaded')
     except Exception as e:
         # Carrega valores de exemplo se o .env não existe
         dotenv.load_dotenv(".env.example")
@@ -43,10 +45,12 @@ def index():
         # definindo que usaremos o Firefox sem carregar a página graficamente
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
+        print('part 1')
 
         # carregando uma página da Internet via Firefox
         driver = webdriver.Firefox(options=options)
         driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
+        print('part 2')
 
         # Obtém o título da página
         titulo_pagina = driver.title
