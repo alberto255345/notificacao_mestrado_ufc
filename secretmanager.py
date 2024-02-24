@@ -7,7 +7,7 @@ def get_json_secret(project_id, secret_name):
     client = secretmanager.SecretManagerServiceClient()
     name = f"projects/{project_id}/secrets/{secret_name}/versions/latest"
     print(f"Name: {name}")
-    response = client.access_secret_version(request={"name": name})
+    response = client.get_secret(request={"name": name})
     # response = client.access_secret_version(request={"name": version.name})
     print(f"Response: {response}")
     
