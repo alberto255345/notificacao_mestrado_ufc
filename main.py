@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 # Define o nome do Secret e o projeto do GCP
 secret_name = "segredos"
-project_id = "931667784738"
+project_id = "portifolio-pessoal-alberto"
 
 if not os.path.exists(".env"):
     try:
