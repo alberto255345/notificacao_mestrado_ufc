@@ -12,4 +12,5 @@ def get_json_secret(project_id, secret_name):
     print(f"Response: {response}")
     
     decoded_value = response.payload.data.decode("UTF-8")
+    print(decoded_value)
     return json.loads(decoded_value) if isinstance(decoded_value, str) else None
