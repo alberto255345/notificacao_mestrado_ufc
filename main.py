@@ -53,9 +53,13 @@ def index():
         print('part 1')
 
         # carregando uma página da Internet via Firefox
-        driver = webdriver.Firefox(options=options)
-        driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
-        print('part 2')
+        try:
+            driver = webdriver.Firefox(options=options)
+            driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
+            print('part 2')
+        except Exception as e:
+            print(e)
+            return e
 
         # Obtém o título da página
         titulo_pagina = driver.title
