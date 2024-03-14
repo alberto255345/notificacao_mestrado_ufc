@@ -27,7 +27,7 @@ if not os.path.exists(".env"):
         print(secret_dict)
         # Define cada chave do dicionário como uma variável de ambiente
         for key, value in secret_dict.items():
-            os.environ[key] = value
+            os.environ[key] = str(value)
         print('secret loaded')
     except Exception as e:
         # Carrega valores de exemplo se o .env não existe
