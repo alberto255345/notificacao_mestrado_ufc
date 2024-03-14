@@ -30,6 +30,7 @@ if not os.path.exists(".env"):
         print('secret loaded')
     except Exception as e:
         # Carrega valores de exemplo se o .env não existe
+        print(e)
         print('secret not found')
         dotenv.load_dotenv(".env.example")
 else:
