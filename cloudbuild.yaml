@@ -8,7 +8,7 @@ steps:
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run', 'deploy', 'notificacao-mestrado', '--image', 'gcr.io/portifolio-pessoal-alberto/notificacao-mestrado', '--region', 'us-central1', '--memory', '1Gi']
+  args: ['run', 'deploy', 'notificacao-mestrado', '--image', 'gcr.io/portifolio-pessoal-alberto/notificacao-mestrado', '--region', 'us-central1', '--memory', '1Gi', '--timeout', '600']
 images:
 - gcr.io/portifolio-pessoal-alberto/notificacao-mestrado
 options:
