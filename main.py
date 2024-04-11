@@ -55,6 +55,8 @@ def index():
         # carregando uma página da Internet via Firefox
         try:
             driver = webdriver.Firefox(options=options)
+            # verifica se driver carregou corretamente a função firefox
+            print(driver.capabilities)
             driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
             print('part 2')
         except Exception as e:
