@@ -28,4 +28,4 @@ RUN pip install -r requirements.txt
 # Define a porta em que o contêiner estará ouvindo
 EXPOSE 8080
 
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "main:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "--timeout", "9999999", "main:app"]
