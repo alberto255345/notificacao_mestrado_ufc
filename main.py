@@ -9,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import dotenv
 import os
+from compara import comparar_e_salvar_json
 from secretmanager import get_json_secret
 
 app = Flask(__name__)
@@ -113,6 +114,9 @@ def index():
 
         print(json_data)
 
+        # compara os dados obtidos com os dados salvos no banco de dados
+        diferenca = comparar_e_salvar_json(json_data, os.getenv('HOST'), os.getenv('USER'), os.getenv('PASSWORD'), os.getenv('DATABASE'))
+
         # Configurações do servidor SMTP e credenciais de login que estão no env
         remetente = os.getenv('REMETENTE')
         remetente_nome = os.getenv('REMETENTE_NOME')
@@ -128,7 +132,7 @@ def index():
         msg['Subject'] = 'Novo mestrado encontrado'
 
         # Corpo do e-mail
-        corpo = json_data
+        corpo = diferenca
         msg.attach(MIMEText(corpo, 'plain'))
 
         # Iniciar conexão com o servidor SMTP
