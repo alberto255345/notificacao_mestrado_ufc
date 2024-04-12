@@ -94,7 +94,7 @@ def index():
             # Adicione o texto de cada coluna à lista de dados
             for coluna in dado_subsequente:
                 if coluna.text != '' :
-                    linha_dados.append(coluna.text)
+                    linha_dados.append(coluna.text.encode('utf-8'))  # Converta para UTF-8
 
             # Adicione a linha de dados à lista de dados
             dados.append(linha_dados)
