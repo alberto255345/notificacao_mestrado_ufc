@@ -140,7 +140,7 @@ def index():
 
         # Corpo do e-mail
         corpo = diferenca
-        msg.attach(MIMEText(corpo, 'plain'))
+        msg.attach(MIMEText(corpo, 'html'))
 
         # Iniciar conexão com o servidor SMTP
         server = smtplib.SMTP(servidor_smtp, porta)
