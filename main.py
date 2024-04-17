@@ -57,7 +57,7 @@ def index():
         try:
             driver = webdriver.Firefox(options=options)
             # verifica se driver carregou corretamente a função firefox
-            print(driver.capabilities)
+            
             driver.get('https://si3.ufc.br/sigaa/public/processo_seletivo/lista.jsf?aba=p-processo&nivel=S')
             print('part 2')
         except Exception as e:
@@ -102,6 +102,15 @@ def index():
         # Crie um DataFrame com os dados
         df = pd.DataFrame(dados, columns=colunas)
 
+        # Convertendo colunas para strings
+        df['Titulo'] = df['Titulo'].str.decode('utf-8')
+        df['Categoria'] = df['Categoria'].str.decode('utf-8')
+        df['Vagas'] = df['Vagas'].str.decode('utf-8')
+        df['Periodo'] = df['Periodo'].str.decode('utf-8')
+
+        # Removendo caracteres indesejados
+        df['Titulo'] = df['Titulo'].str.replace('›', '').str.strip()
+
         # Dividir a coluna 'Período' em duas colunas: 'Início' e 'Fim'
         df[['Início', 'Fim']] = df['Periodo'].str.split('a', expand=True)
 
@@ -109,13 +118,11 @@ def index():
         df['Início'] = df['Início'].str.strip()
         df['Fim'] = df['Fim'].str.strip()
 
-        # Converter DataFrame em JSON
-        json_data = df.to_json(orient='records')
-
-        print(json_data)
+        # # Converter DataFrame em JSON
+        # json_data = df.to_json(orient='records')
 
         # compara os dados obtidos com os dados salvos no banco de dados
-        diferenca = comparar_e_salvar_json(json_data, os.getenv('HOST'), os.getenv('USER'), os.getenv('PASSWORD'), os.getenv('DATABASE'))
+        diferenca = comparar_e_salvar_json(df, os.getenv('HOST'), os.getenv('USER'), os.getenv('PASSWORD'), os.getenv('DATABASE'))
 
         # Configurações do servidor SMTP e credenciais de login que estão no env
         remetente = os.getenv('REMETENTE')
