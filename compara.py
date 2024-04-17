@@ -39,6 +39,7 @@ def comparar_e_salvar_json(df, host, user, password, database):
         # Exibir a tabela HTML
         print("diferença encontrada")
     else:
+        html_table = 'Não há novidades presentes apenas no DataFrame à esquerda.'
         # Se não houver diferenças apenas no DataFrame à esquerda, exibir uma mensagem
         print("Não há novidades presentes apenas no DataFrame à esquerda.")
 
