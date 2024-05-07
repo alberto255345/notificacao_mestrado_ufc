@@ -1,8 +1,8 @@
-🚀 Bem-vindo ao repositório do notificacao_mestrado_ufc Cloud Function! 📚✨
+🚀 Bem-vindo ao repositório do notificacao_mestrado_ufc Cloud Run! 📚✨
 
-ℹ️ Aqui você encontrará o código-fonte para uma Cloud Function no Google Cloud Platform, projetada para trazer notificações diárias do seu servidor pessoal para o mestrado na UFC.
+ℹ️ Aqui você encontrará o código-fonte para uma Cloud Run no Google Cloud Platform, projetada para trazer notificações diárias do seu servidor pessoal para o mestrado na UFC.
 
-ℹ️ Objetivo: Este projeto visa automatizar o processo de notificação para o mestrado na UFC, utilizando uma Cloud Function no Google Cloud Platform.
+ℹ️ Objetivo: Este projeto visa automatizar o processo de notificação para o mestrado na UFC, utilizando uma Cloud Run no Google Cloud Platform.
 
 🔧 Funcionalidades:
 
@@ -11,7 +11,7 @@
 🔍 Como funciona:
 
 ⚙️ Utiliza o código fonte notificacao_mestrado_ufc como base.
-🌐 Implementa uma Cloud Function no Google Cloud Platform.
+🌐 Implementa uma Cloud Run no Google Cloud Platform.
 🔄 Configura a função para acionar diariamente a partir do servidor pessoal.
 🛠️ Instruções de Uso:
 
