@@ -1,32 +1,75 @@
-🚀 Bem-vindo ao repositório do notificacao_mestrado_ufc Cloud Run! 📚✨
+## 💻 Projeto: Notificação de Mestrados na UFC com Web Scraping e Cloud Run
 
-ℹ️ Aqui você encontrará o código-fonte para uma Cloud Run no Google Cloud Platform, projetada para trazer notificações diárias do seu servidor pessoal para o mestrado na UFC.
+Este projeto demonstra como criar um sistema de web scraping para extrair informações sobre mestrados da UFC e enviá-las por e-mail, utilizando o Cloud Run do Google Cloud para implantação.
 
-ℹ️ Objetivo: Este projeto visa automatizar o processo de notificação para o mestrado na UFC, utilizando uma Cloud Run no Google Cloud Platform.
+---
 
-🔧 Funcionalidades:
+## 📁 Estrutura do Projeto
 
-📅 Dispara notificações diárias do servidor pessoal.
-💡 Facilita a gestão e organização das atividades do mestrado na UFC.
-🔍 Como funciona:
+O projeto consiste nos seguintes arquivos:
 
-⚙️ Utiliza o código fonte notificacao_mestrado_ufc como base.
-🌐 Implementa uma Cloud Run no Google Cloud Platform.
-🔄 Configura a função para acionar diariamente a partir do servidor pessoal.
-🛠️ Instruções de Uso:
+* **main.py:** Arquivo principal com o código Python que realiza o web scraping, compara os dados obtidos com os dados salvos anteriormente, e envia um e-mail com as diferenças encontradas.
+* **compara.py:** Arquivo com funções para comparar os dados extraídos com os dados armazenados em um banco de dados PostgreSQL.
+* **Dockerfile:** Arquivo para construir a imagem Docker que será utilizada no Cloud Run.
+* **secretmanager.py:** Arquivo com funções para acessar segredos do Secret Manager do Google Cloud.
+* **cloudbuild.yaml:** Arquivo de configuração para o Cloud Build, que automatiza o processo de build, push e deploy da aplicação no Cloud Run.
+* **requirements.txt:** Arquivo com as dependências do projeto.
 
-📥 Clone este repositório.
-📦 Instale as dependências necessárias.
-⚙️ Configure as credenciais do Google Cloud Platform.
-🚀 Implante a função na sua conta do GCP.
-🎉 Desfrute de notificações automáticas diárias para o seu mestrado na UFC!
-👩‍💻 Contribuições:
+---
 
-🎁 Contribuições são bem-vindas!
-📝 Sinta-se à vontade para reportar problemas ou enviar solicitações de melhoria.
-📌 Nota: Certifique-se de seguir todas as políticas de segurança ao lidar com dados sensíveis do seu mestrado na UFC.
+## 🔨 Classes e Métodos
 
-🔗 Links Úteis:
+### main.py
 
-📚 Documentação do Google Cloud Platform
-📋 Documentação do projeto notificacao_mestrado_ufc
+* **Classe `Flask`:** Cria uma instância da aplicação Flask, que é utilizada para definir rotas e lidar com as requisições HTTP.
+* **Método `index()`:** Este método é chamado quando uma requisição HTTP é feita para a rota `/`. Ele utiliza o Selenium para realizar o web scraping da página de mestrados da UFC, extraindo informações como título, categoria, vagas e período. Em seguida, compara os dados obtidos com os dados salvos anteriormente e envia um e-mail com as diferenças encontradas.
+* **Método `page_not_found()`:** Método para lidar com erros 404 (página não encontrada).
+
+### compara.py
+
+* **Classe `JSONData`:** Define a estrutura da tabela no banco de dados para armazenar os dados extraídos em formato JSON.
+* **Método `comparar_e_salvar_json()`:** Este método compara os dados extraídos com os dados armazenados no banco de dados e salva o novo JSON com os dados atualizados.
+
+### secretmanager.py
+
+* **Método `get_json_secret()`:** Este método recupera os segredos armazenados no Secret Manager do Google Cloud, como credenciais de banco de dados e informações de e-mail.
+
+---
+
+## ☁️ Cloud Run
+
+O Cloud Run é um serviço do Google Cloud que permite implantar aplicações web em contêineres sem precisar gerenciar a infraestrutura subjacente. Neste projeto, o Cloud Build é utilizado para construir a imagem Docker, enviá-la para o Container Registry e implantá-la no Cloud Run.
+
+---
+
+## 📧 Notificação por E-mail
+
+O projeto envia um e-mail com as diferenças encontradas entre os dados extraídos e os dados armazenados anteriormente. As informações de e-mail, como remetente, destinatário e senha, são armazenadas no Secret Manager do Google Cloud por questões de segurança.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* Python
+* Flask
+* Selenium
+* pandas
+* SQLAlchemy
+* psycopg2-binary
+* Docker
+* Google Cloud Secret Manager
+* Google Cloud Build
+* Google Cloud Run
+
+---
+
+## 💡 Próximos Passos
+
+* Implementar um agendamento para que o web scraping seja executado automaticamente em intervalos regulares.
+* Adicionar mais funcionalidades, como a possibilidade de filtrar os mestrados por área de interesse.
+* Melhorar a interface do usuário para permitir que os usuários configurem as notificações de e-mail.
+
+
+---
+
+**Observação:** Este projeto é apenas um exemplo de como criar um web scraping e implantá-lo no Cloud Run. Adapte o código e as configurações de acordo com suas necessidades.
